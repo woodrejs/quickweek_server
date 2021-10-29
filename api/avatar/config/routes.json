@@ -1,0 +1,52 @@
+{
+  "routes": [
+    {
+      "method": "GET",
+      "path": "/avatars",
+      "handler": "avatar.find",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/avatars/count",
+      "handler": "avatar.count",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "GET",
+      "path": "/avatars/:id",
+      "handler": "avatar.findOne",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "POST",
+      "path": "/avatars",
+      "handler": "avatar.create",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "PUT",
+      "path": "/avatars/:id",
+      "handler": "avatar.update",
+      "config": {
+        "policies": []
+      }
+    },
+    {
+      "method": "DELETE",
+      "path": "/avatars/:id",
+      "handler": "avatar.delete",
+      "config": {
+        "policies": []
+      }
+    }
+  ]
+}

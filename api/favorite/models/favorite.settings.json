@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "favorites",
+  "info": {
+    "name": "favorite",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "img": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    },
+    "uid": {
+      "type": "uid"
+    },
+    "users": {
+      "via": "favorites",
+      "plugin": "users-permissions",
+      "collection": "user"
+    }
+  }
+}

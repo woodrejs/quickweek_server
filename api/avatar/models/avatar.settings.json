@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "avatars",
+  "info": {
+    "name": "Avatar",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "user": {
+      "via": "avatar",
+      "plugin": "users-permissions",
+      "model": "user"
+    },
+    "url": {
+      "type": "string"
+    },
+    "public_id": {
+      "type": "string"
+    }
+  }
+}
