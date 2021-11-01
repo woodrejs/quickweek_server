@@ -55,9 +55,9 @@ module.exports = {
         return { _id, id: uid, title, date, type };
       }
 
-      return ctx.response.notFound("Taki termin już istnieje.");
+      return ctx.response.notFound("Such a term already exists.");
     } catch (error) {
-      return ctx.response.notFound("Błąd podczas dodawania do bazy danych.");
+      return ctx.response.notFound("Error adding to database.");
     }
   },
   async delete(ctx) {
@@ -68,7 +68,7 @@ module.exports = {
       const termsById = await strapi.query("schedule").find({ uid: id });
 
       if (!termsById.length) {
-        return ctx.response.notFound("Nie ma takiego wydrzenia.");
+        return ctx.response.notFound("There is no such event.");
       }
 
       const isDateInArr = termsById.filter(
@@ -76,7 +76,7 @@ module.exports = {
       );
 
       if (!isDateInArr.length) {
-        return ctx.response.notFound("Nie ma takiego terminu.");
+        return ctx.response.notFound("There is no such date.");
       }
 
       const termToDelete = isDateInArr[0];
@@ -86,7 +86,7 @@ module.exports = {
       );
 
       if (!userInArray.length) {
-        return ctx.response.notFound("Nie ma takiego uzytkownika.");
+        return ctx.response.notFound("There is no such user.");
       }
 
       if (termToDelete.users.length === 1) {
@@ -112,7 +112,7 @@ module.exports = {
         return { _id, id: uid, title, date, type };
       }
     } catch (error) {
-      return ctx.response.notFound("Błąd podczas usuwania z bazy danych.");
+      return ctx.response.notFound("Error removing from database.");
     }
   },
 };

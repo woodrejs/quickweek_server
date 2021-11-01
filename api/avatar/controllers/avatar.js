@@ -34,7 +34,7 @@ module.exports = {
       }
       return { public_id, url };
     } catch (error) {
-      return ctx.response.notFound("Błąd podczas dodawania zdjęcia.");
+      return ctx.response.notFound("Error adding photo.");
     }
   },
   async delete(ctx) {
@@ -46,7 +46,7 @@ module.exports = {
 
       return await strapi.services.avatar.delete({ id: avatarID });
     } catch (error) {
-      return ctx.response.notFound("Błąd podczas usuwania zdjęcia.");
+      return ctx.response.notFound("Error while deleting photo.");
     }
   },
 };

@@ -5,7 +5,6 @@ module.exports = {
     const userID = ctx.state.user.id;
     const favID = ctx.request.body.id;
 
-
     try {
       const isCreated = await strapi.query("favorite").findOne({ uid: favID });
 
@@ -29,7 +28,7 @@ module.exports = {
       }
       return ctx.request.body;
     } catch (error) {
-      return ctx.response.notFound("Takiego obiektu nie ma w bazie danych.");
+      return ctx.response.notFound("There is no such object in the database.");
     }
   },
   async delete(ctx) {
@@ -55,10 +54,10 @@ module.exports = {
 
         return { id: favID, title: isCreated.title };
       } else {
-        return { messsage: "Takiego obiektu nie ma w bazie danych." };
+        return { messsage: "There is no such object in the database." };
       }
     } catch (error) {
-      return ctx.response.notFound("Błąd podczas usuwania z bazy danych.");
+      return ctx.response.notFound("Error removing from database.");
     }
   },
   async findByUser(ctx) {
@@ -78,7 +77,7 @@ module.exports = {
         })
       );
     } catch (error) {
-      return ctx.response.notFound("Błą servera.");
+      return ctx.response.notFound("Server error.");
     }
   },
 };

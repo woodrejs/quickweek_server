@@ -107,20 +107,79 @@ module.exports = {
     ctx.send(sanitizeUser(data));
   },
   async destroyMe(ctx) {
-    const { id } = ctx.state.user;
+    const data = await strapi.plugins["users-permissions"].services.user.fetch({
+      id: ctx.state.user.id,
+    });
 
     try {
-      const data = await strapi.plugins[
+      const resp = await strapi.plugins[
         "users-permissions"
-      ].services.user.remove({ id });
+      ].services.user.remove({ id: data.id });
 
       if (data.avatar) {
         await cloudinary.uploader.destroy(data.avatar.public_id);
+        await strapi.services.avatar.delete({ id: data.avatar.id });
       }
 
-      return data;
+      if (data.schedules && data.schedules.length) {
+        const schedulesArr = data.schedules.map((item) => item.id);
+
+        const userSchedules = await strapi
+          .query("schedule")
+          .find({ id: schedulesArr });
+
+        if (userSchedules && userSchedules.length) {
+          await Promise.all(
+            userSchedules.map(async ({ id, users }) => {
+              if (users.length <= 1) {
+                await strapi.services.schedule.delete({
+                  id,
+                });
+              }
+              if (users.length > 1) {
+                const filteredUsers = users.filter(
+                  (user) => user.id !== data.id
+                );
+                await strapi.services.schedule.update(
+                  { id },
+                  { users: [...filteredUsers] }
+                );
+              }
+            })
+          );
+        }
+      }
+
+      if (data.favorites && data.favorites.length) {
+        const favoritesArr = data.favorites.map((item) => item._id);
+        const userFavorites = await strapi
+          .query("favorite")
+          .find({ _id: favoritesArr });
+
+        if (userFavorites && userFavorites.length) {
+          await Promise.all(
+            userFavorites.map(async ({ id, users }) => {
+              if (users.length <= 1) {
+                await strapi.services.favorite.delete({ id });
+              }
+              if (users.length > 1) {
+                const filteredUsers = users.filter(
+                  (user) => user.id !== data.id
+                );
+
+                await strapi.services.favorite.update(
+                  { id },
+                  { users: [...filteredUsers] }
+                );
+              }
+            })
+          );
+        }
+      }
+
+      return resp;
     } catch (error) {
-      return new Error("Błąd podczas usuwania konta.");
+      return new Error("Error while deleting the account.");
     }
   },
 };
