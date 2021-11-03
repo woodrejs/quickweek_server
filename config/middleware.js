@@ -1,6 +1,10 @@
 module.exports = {
   // ...
   settings: {
+    cors: {
+      enabled: true,
+      origin: ["*"],
+    },
     parser: {
       // ...
       formLimit: "10mb", // modify here limit of the form body
